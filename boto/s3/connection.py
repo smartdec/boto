@@ -339,7 +339,9 @@ class S3Connection(AWSAuthConnection):
         if headers:
             hdr_prefix = self.provider.header_prefix
             for k, v in headers.items():
-                if k.startswith(hdr_prefix):
+                if k.startswith(hdr_prefix) or k.lower() in ['cache-control', 'content-md5', 'content-type',
+                         'content-encoding', 'content-disposition',
+                         'date', 'expires']:
                     # headers used for sig generation must be
                     # included in the url also.
                     extra_qp.append("%s=%s" % (k, urllib.quote(v)))
